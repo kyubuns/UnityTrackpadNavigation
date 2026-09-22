@@ -1,0 +1,7 @@
+BasedOnStyle: Microsoft
+ColumnLimit: 0
+InsertBraces: true
+AllowShortFunctionsOnASingleLine: None
+AllowShortEnumsOnASingleLine: false
+AllowShortLambdasOnASingleLine: None
+SortIncludes: Never
