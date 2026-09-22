@@ -1,0 +1,9 @@
+# Unityが生成する空のYAML値の末尾空白を維持する。
+*.unity whitespace=-blank-at-eol
+*.prefab whitespace=-blank-at-eol
+*.asset whitespace=-blank-at-eol
+*.controller whitespace=-blank-at-eol
+*.playable whitespace=-blank-at-eol
+*.vfx whitespace=-blank-at-eol
+*.meta whitespace=-blank-at-eol
+*.shadergraph whitespace=-blank-at-eof

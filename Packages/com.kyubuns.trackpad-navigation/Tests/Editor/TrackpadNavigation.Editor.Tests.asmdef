@@ -1,0 +1,8 @@
+{
+  "name": "TrackpadNavigation.Editor.Tests",
+  "references": ["TrackpadNavigation.Editor"],
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["UNITY_EDITOR_OSX"],
+  "optionalUnityReferences": ["TestAssemblies"],
+  "autoReferenced": false
+}

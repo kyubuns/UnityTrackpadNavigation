@@ -1,0 +1,1 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements"><ui:VisualElement style="width: 720px; height: 480px; background-color: rgb(24, 32, 48); padding: 30px;"><ui:Label text="Trackpad Navigation" style="font-size: 32px; color: white;"/><ui:Button text="Edit me in UI Builder"/></ui:VisualElement></ui:UXML>
