@@ -1,0 +1,7 @@
+{
+  "name": "TrackpadNavigation.Editor",
+  "rootNamespace": "TrackpadNavigation",
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["UNITY_EDITOR_OSX"],
+  "autoReferenced": true
+}
