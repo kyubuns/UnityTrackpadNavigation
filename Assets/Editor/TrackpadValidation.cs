@@ -20,6 +20,15 @@ public static class TrackpadValidation
     }
     [MenuItem("Tools/Trackpad Navigation/Open Animator")]
     public static void OpenAnimator() => OpenAsset(".controller");
+    [MenuItem("Tools/Trackpad Navigation/Open Animation")]
+    public static void OpenAnimation()
+    {
+        var clip = AssetDatabase.LoadAssetAtPath<UnityEngine.AnimationClip>(Folder + "/Navigation.anim");
+        Selection.activeObject = clip;
+        var window = EditorWindow.GetWindow<AnimationWindow>();
+        window.animationClip = clip;
+        window.Show();
+    }
     [MenuItem("Tools/Trackpad Navigation/Open Timeline")]
     public static void OpenTimeline() => TimelineEditor.GetOrCreateWindow().SetTimeline(AssetDatabase.LoadAssetAtPath<TimelineAsset>(Folder + "/Navigation.playable"));
     [MenuItem("Tools/Trackpad Navigation/Open Shader Graph")]

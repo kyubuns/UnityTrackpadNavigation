@@ -32,13 +32,14 @@ Tested with macOS 26.6.2 and Unity 6000.3.23f1 on Apple Silicon.
 - Scene View
 - Timeline
 - Animator
+- Animation (Dope Sheet / Curves)
 - Shader Graph
 - VFX Graph
 - UI Builder
 
 Orbit and look are available in Scene View. Double-tap focus is available in Scene View and GraphView.
 
-- Animator, Timeline, and UI Builder use internal Unity APIs and may need updates when Unity changes.
+- Animator, Animation, Timeline, and UI Builder use internal Unity APIs and may need updates when Unity changes.
 - Scene targeting uses public [PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html) and [MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html) APIs. Mesh picking falls back to colliders; empty space uses the current pivot for orbit and its depth plane for zoom. GPU-only geometry and deformations, and non-triangle meshes, are not supported for surface picking.
 - Other GraphView canvases are detected automatically. For custom UI Toolkit canvases, register a viewport and its immediate content child. Wrap type references and registration code in `#if UNITY_EDITOR_OSX`.
 
@@ -50,7 +51,7 @@ canvas?.Dispose();
 
 ## Development
 
-Example scenes and graphs are in `Assets/TrackpadExamples`. Open them from `Tools > Trackpad Navigation > Open ...`. The example Shader Graph and VFX Graph assets use Unity templates; their licenses are included in that folder.
+Example scenes, animation clips, and graphs are in `Assets/TrackpadExamples`. Open them from `Tools > Trackpad Navigation > Open ...`. The example Shader Graph and VFX Graph assets use Unity templates; their licenses are included in that folder.
 For recordings, open `Window > Trackpad Navigation > Live View` in this project to show finger positions and modifier keys. This tool lives in `Assets/Editor/TrackpadLiveView` and is not included in the UPM package. Its native build script is `Assets/Editor/TrackpadLiveView/Native~/build.sh`.
 Run `TrackpadNavigation.Tests` in the EditMode Test Runner. To run the tests from another project, add the package name to `testables` in that project's manifest.
 

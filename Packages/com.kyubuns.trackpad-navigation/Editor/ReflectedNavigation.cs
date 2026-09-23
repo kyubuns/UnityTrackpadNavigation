@@ -50,6 +50,8 @@ namespace TrackpadNavigation
             {
                 case "UnityEditor.Graphs.AnimatorControllerTool":
                     return AnimatorNavigation.TryCreate(window);
+                case "UnityEditor.AnimationWindow":
+                    return AnimationNavigation.TryCreate(window);
                 case "UnityEditor.Timeline.TimelineWindow":
                     return TimelineNavigation.TryCreate(window);
             }

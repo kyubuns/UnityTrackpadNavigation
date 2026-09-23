@@ -32,13 +32,14 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 - Scene View
 - Timeline
 - Animator
+- Animation（ドープシート／カーブ）
 - Shader Graph
 - VFX Graph
 - UI Builder
 
 回転・見回しはScene View、ダブルタップのフォーカスはScene View／GraphViewに対応します。
 
-- Animator／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
+- Animator／Animation／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
 - Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
 - その他のGraphViewは自動検出します。独自UI Toolkitでは、viewport直下のcontentを登録してください。型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
 

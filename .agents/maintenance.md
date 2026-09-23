@@ -24,7 +24,8 @@
 - SceneのPinchは開始時に中心を固定し、サイズ比に合わせてpivotも移動する。Perspectiveは表面の交点、空白とOrthographicはpivot深度面を使い、終了・取消で解放する。
 - OrbitのPOIも開始時に固定する。公開Picking＋Mesh読み取りでColliderやRead/Write設定への依存を避ける。Mesh取得不可ならCollider、交点なしならpivotへ戻る。PlaceObjectはグリッドにもヒットするため採用しない。
 - 画面端のPOIを中央へ寄せず、視点と構図を維持する。終了・Momentum入力は指を離す前の操作種別を維持し、OrbitにはMomentumを適用しない。2D／回転ロック中はPan、Command操作はカメラ位置を保って見回す。
-- Zoomは指数カーブ。GraphViewの丸め端数とShader Graphのゼロ座標復元回避を維持する。Animator／Timeline／UI BuilderのReflectionはビュー状態に限定する。
+- Zoomは指数カーブ。GraphViewの丸め端数とShader Graphのゼロ座標復元回避を維持する。Reflectionによる各Editorへの統合はビュー状態に限定する。
+- AnimationのDope Sheetは時間軸の横移動と階層一覧の共有スクロール、Curvesは時間軸の縦横変換を使う。モード変更時は入力先を作り直し、ルーラー・イベント行・スクロールバーは対象外にする。
 
 ## 検証
 
