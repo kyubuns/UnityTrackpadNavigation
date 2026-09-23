@@ -51,6 +51,7 @@ canvas?.Dispose();
 ## Development
 
 Example scenes and graphs are in `Assets/TrackpadExamples`. Open them from `Tools > Trackpad Navigation > Open ...`. The example Shader Graph and VFX Graph assets use Unity templates; their licenses are included in that folder.
+For recordings, open `Window > Trackpad Navigation > Live View` in this project to show finger positions and modifier keys. This tool lives in `Assets/Editor/TrackpadLiveView` and is not included in the UPM package. Its native build script is `Assets/Editor/TrackpadLiveView/Native~/build.sh`.
 Run `TrackpadNavigation.Tests` in the EditMode Test Runner. To run the tests from another project, add the package name to `testables` in that project's manifest.
 
 To rebuild the native plugin, run these commands from the repository root on an Apple Silicon Mac with Xcode Command Line Tools, then restart Unity:

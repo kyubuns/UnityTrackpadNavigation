@@ -1,0 +1,6 @@
+{
+  "name": "TrackpadNavigation.LiveView",
+  "includePlatforms": ["Editor"],
+  "defineConstraints": ["UNITY_EDITOR_OSX"],
+  "autoReferenced": false
+}

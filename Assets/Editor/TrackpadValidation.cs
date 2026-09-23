@@ -11,7 +11,10 @@ public static class TrackpadValidation
     [MenuItem("Tools/Trackpad Navigation/Open Scene")]
     public static void OpenScene()
     {
-        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            return;
+        }
         EditorSceneManager.OpenScene(Folder + "/Navigation.unity");
         SceneView.GetWindow<SceneView>().Show();
     }

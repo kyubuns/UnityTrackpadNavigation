@@ -51,6 +51,7 @@ canvas?.Dispose();
 ## 開発・検証
 
 サンプルは `Assets/TrackpadExamples` にあります。`Tools > Trackpad Navigation > Open ...` から各Editorで開けます。Shader GraphとVFX GraphのサンプルはUnityのテンプレートを使用し、同じフォルダーにライセンスを同梱しています。
+録画用には、このプロジェクトの `Window > Trackpad Navigation > Live View` で指位置と修飾キーを表示できます。`Assets/Editor/TrackpadLiveView` に置いた開発用ツールで、UPMパッケージには含みません。専用Nativeのビルドは `Assets/Editor/TrackpadLiveView/Native~/build.sh` で行います。
 Test RunnerのEditModeで `TrackpadNavigation.Tests` を実行できます。外部プロジェクトからテストする場合は、manifestの `testables` にパッケージ名を追加してください。
 
 Nativeを変更する場合は、Apple Silicon MacとXcode Command Line Toolsで、リポジトリ直下から次を実行し、Unityを再起動します。

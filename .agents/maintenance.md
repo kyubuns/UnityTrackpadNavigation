@@ -7,6 +7,7 @@
 - 開発環境はProjectVersionとpackages-lockを参照する。READMEの動作確認環境には実行検証したmacOSとUnityの版だけを記載する。進捗・実行中のプロセス・一時ファイル・CLIの一般的な手順は記録しない。
 - 補助コードはBashかC#。配布はUPM。アーカイブや作成スクリプトは置かない。
 - `Assets/TrackpadExamples` と参照される描画設定・metaはGit管理する。各Editorを開く入口は `Assets/Editor/TrackpadValidation.cs`。Unityテンプレート由来のグラフには元のライセンスを同梱する。
+- 録画用Live Viewは `Assets/Editor/TrackpadLiveView` に独立配置し、UPMには含めない。専用Nativeは公開NSTouchの実座標を観測するだけで入力を消費しない。開いている間だけ各NSViewのタッチ取得を有効にし、終了・Domain Reloadで元の設定へ戻す。
 
 ## 実装境界
 
