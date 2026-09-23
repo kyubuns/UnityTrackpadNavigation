@@ -4,6 +4,8 @@
 
 Apple SiliconのmacOS Unity Editorを、トラックパッドでパン・ズーム・回転できます。
 
+https://github.com/user-attachments/assets/7dfbf874-a19e-457c-acfa-09c6d326cd9f
+
 ## 導入
 
 Package Managerの **Install package from git URL** に次のURLを指定します。
@@ -11,6 +13,8 @@ Package Managerの **Install package from git URL** に次のURLを指定しま�
 ```text
 https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns.trackpad-navigation
 ```
+
+初回導入後、Sceneビューの動きが滑らかでない場合はUnity Editorを再起動してください。
 
 ## 操作
 

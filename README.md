@@ -4,6 +4,8 @@ English | [日本語](README.ja.md)
 
 Trackpad pan, zoom, and rotation for the Unity Editor on Apple Silicon Macs.
 
+https://github.com/user-attachments/assets/7dfbf874-a19e-457c-acfa-09c6d326cd9f
+
 ## Install
 
 Add this URL with **Package Manager > Install package from git URL**:
@@ -11,6 +13,8 @@ Add this URL with **Package Manager > Install package from git URL**:
 ```text
 https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns.trackpad-navigation
 ```
+
+If Scene View navigation feels choppy after the first installation, restart the Unity Editor.
 
 ## Controls
 
