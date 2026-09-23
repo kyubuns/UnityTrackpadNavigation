@@ -27,6 +27,7 @@ If Scene View navigation feels choppy after the first installation, restart the 
 | Command + two-finger slide | Look around from the camera position |
 
 Adjust sensitivity, inversion, momentum, and enable/disable the plugin in `Preferences > Trackpad Navigation`.
+The same page also exposes Unity's **Shader Graph > Zoom Step Size** for standard scroll zoom. This changes Unity's own preference; Trackpad Navigation's **Restore defaults** does not reset it.
 Inspect input in `Window > Trackpad Navigation > Diagnostics`. Use `Copy diagnostic report` to copy details for a bug report.
 
 ## Supported windows and limitations

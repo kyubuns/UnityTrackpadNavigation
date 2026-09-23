@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -5,6 +7,8 @@ namespace TrackpadNavigation
 {
     internal static class TrackpadSettingsProvider
     {
+        static readonly PropertyInfo ShaderGraphZoomStepSize = Type.GetType("UnityEditor.ShaderGraph.ShaderGraphPreferences, Unity.ShaderGraph.Editor")?.GetProperty("zoomStepSize", BindingFlags.Static | BindingFlags.NonPublic);
+
         [SettingsProvider]
         static SettingsProvider Create() => new SettingsProvider("Preferences/Trackpad Navigation", SettingsScope.User)
         {
@@ -16,7 +20,9 @@ namespace TrackpadNavigation
                 "orbit",
                 "mac",
                 "look",
-                "momentum"
+                "momentum",
+                "Shader Graph",
+                "Zoom Step Size"
             },
             guiHandler = _ => Draw()
         };
@@ -52,6 +58,29 @@ namespace TrackpadNavigation
             if (GUILayout.Button("Open diagnostics", GUILayout.Width(160)))
             {
                 TrackpadDebugWindow.Open();
+            }
+
+            DrawUnitySettings();
+        }
+
+        static void DrawUnitySettings()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Unity standard settings — Shader Graph", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Changes Unity's Preferences > Shader Graph > Zoom Step Size. Controls standard scroll zoom, including Control + two-finger scrolling. This is separate from Trackpad Navigation's pinch sensitivity and Restore defaults.", MessageType.Info);
+            if (ShaderGraphZoomStepSize == null || ShaderGraphZoomStepSize.PropertyType != typeof(float) || !ShaderGraphZoomStepSize.CanRead || !ShaderGraphZoomStepSize.CanWrite)
+            {
+                EditorGUILayout.HelpBox("Zoom Step Size is unavailable in this Shader Graph version, or Shader Graph is not installed.", MessageType.None);
+                return;
+            }
+
+            // EditorPrefsだけではキャッシュと開いているGraphへ反映されないため、Unity自身のsetterを使う。
+            float current = (float)ShaderGraphZoomStepSize.GetValue(null);
+            EditorGUI.BeginChangeCheck();
+            float next = EditorGUILayout.Slider(new GUIContent("Zoom Step Size", "Unity standard setting. Lower values zoom more slowly. Default: 0.5."), current, 0, 1);
+            if (EditorGUI.EndChangeCheck())
+            {
+                ShaderGraphZoomStepSize.SetValue(null, next);
             }
         }
     }

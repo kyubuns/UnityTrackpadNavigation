@@ -27,6 +27,7 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 | Command + 2本指スライド | カメラ位置を保って見回す |
 
 `Preferences > Trackpad Navigation` で有効化・感度・反転・慣性スクロールを調整できます。
+同じ画面でUnity標準の **Shader Graph > Zoom Step Size**（スクロールズームの速度）も変更できます。Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore defaults** の対象には含みません。
 `Window > Trackpad Navigation > Diagnostics` で入力を確認し、`Copy diagnostic report` で報告用情報をコピーできます。
 
 ## 対応と制約
