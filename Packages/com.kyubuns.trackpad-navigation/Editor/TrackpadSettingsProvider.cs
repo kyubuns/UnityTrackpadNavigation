@@ -22,6 +22,7 @@ namespace TrackpadNavigation
                 "look",
                 "momentum",
                 "Shader Graph",
+                "VFX Graph",
                 "Zoom Step Size"
             },
             guiHandler = _ => Draw()
@@ -45,6 +46,13 @@ namespace TrackpadNavigation
             value.Momentum = EditorGUILayout.Toggle("Enable momentum", value.Momentum);
             value.SceneIntegration = EditorGUILayout.Toggle("Scene View integration", value.SceneIntegration);
             value.GraphIntegration = EditorGUILayout.Toggle("Graph / Timeline integration", value.GraphIntegration);
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("VFX Graph", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Controls VFX Graph's standard scroll zoom, including Control + two-finger scrolling. Lower values zoom more slowly. Requires Enable and Graph / Timeline integration. Pinch uses Zoom sensitivity above.", MessageType.Info);
+            using (new EditorGUI.DisabledScope(!value.Enabled || !value.GraphIntegration))
+            {
+                value.VfxZoomStepSize = EditorGUILayout.Slider(new GUIContent("Zoom Step Size", "Trackpad Navigation override. Restore defaults resets this to Unity's standard scroll step."), value.VfxZoomStepSize, 0.001f, 1);
+            }
             if (EditorGUI.EndChangeCheck())
             {
                 TrackpadSettings.Save();

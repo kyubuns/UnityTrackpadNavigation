@@ -1,5 +1,6 @@
 using System;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace TrackpadNavigation
@@ -17,12 +18,14 @@ namespace TrackpadNavigation
         public bool Momentum = true;
         public bool SceneIntegration = true;
         public bool GraphIntegration = true;
+        public float VfxZoomStepSize = ContentZoomer.DefaultScaleStep;
 
         public void Validate()
         {
             PanSensitivity = NavigationMath.Sensitivity(PanSensitivity);
             ZoomSensitivity = NavigationMath.Sensitivity(ZoomSensitivity);
             OrbitSensitivity = NavigationMath.Sensitivity(OrbitSensitivity);
+            VfxZoomStepSize = float.IsNaN(VfxZoomStepSize) || float.IsInfinity(VfxZoomStepSize) ? ContentZoomer.DefaultScaleStep : Mathf.Clamp(VfxZoomStepSize, 0.001f, 1);
         }
 
         public static TrackpadPreferences FromJson(string json)
@@ -55,6 +58,7 @@ namespace TrackpadNavigation
             Current.Validate();
             EditorPrefs.SetString(Key, JsonUtility.ToJson(Current));
             TrackpadNavigator.ClearTarget();
+            VfxGraphZoom.Refresh();
         }
         public static void Reset()
         {

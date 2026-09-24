@@ -28,6 +28,7 @@ If Scene View navigation feels choppy after the first installation, restart the 
 
 Adjust sensitivity, inversion, momentum, and enable/disable the plugin in `Preferences > Trackpad Navigation`.
 The same page also exposes Unity's **Shader Graph > Zoom Step Size** for standard scroll zoom. This changes Unity's own preference; Trackpad Navigation's **Restore defaults** does not reset it.
+VFX Graph's **Zoom Step Size** on the same page is a Trackpad Navigation override for standard scroll zoom (including Control + two-finger scrolling), separate from pinch sensitivity. Lower values zoom more slowly. It is reset by **Restore defaults**; turning off **Enable** or **Graph / Timeline integration** restores the graph's original scroll step.
 Inspect input in `Window > Trackpad Navigation > Diagnostics`. Use `Copy diagnostic report` to copy details for a bug report.
 
 ## Supported windows and limitations

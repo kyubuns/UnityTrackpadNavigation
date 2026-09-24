@@ -28,6 +28,7 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 
 `Preferences > Trackpad Navigation` で有効化・感度・反転・慣性スクロールを調整できます。
 同じ画面でUnity標準の **Shader Graph > Zoom Step Size**（スクロールズームの速度）も変更できます。Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore defaults** の対象には含みません。
+同じ画面の **VFX Graph > Zoom Step Size** は、このプラグインが標準スクロールズーム（Control + 2本指スクロールを含む）の速度を上書きする設定です。ピンチ感度とは独立し、値を小さくすると遅くなります。**Restore defaults** でリセットされ、**Enable** または **Graph / Timeline integration** をOFFにするとGraphの元のズーム幅に戻ります。
 `Window > Trackpad Navigation > Diagnostics` で入力を確認し、`Copy diagnostic report` で報告用情報をコピーできます。
 
 ## 対応と制約
