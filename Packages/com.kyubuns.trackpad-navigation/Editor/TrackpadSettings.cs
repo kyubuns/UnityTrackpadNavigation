@@ -14,7 +14,7 @@ namespace TrackpadNavigation
         public bool InvertNaturalScrolling;
         public bool InvertZoom;
         public bool InvertPanX, InvertPanY, InvertOrbitX, InvertOrbitY;
-        public bool Momentum;
+        public bool Momentum = true;
         public bool SceneIntegration = true;
         public bool GraphIntegration = true;
 
