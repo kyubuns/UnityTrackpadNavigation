@@ -29,9 +29,9 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 `Preferences > Trackpad Navigation` で有効化・感度・反転・慣性スクロールを調整できます。
 同じ画面でUnity標準の **Shader Graph > Zoom Step Size**（スクロールズームの速度）も変更できます。
 Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore defaults** の対象には含みません。
-同じ画面の **VFX Graph > Zoom Step Size** は、このプラグインが標準スクロールズーム（Control + 2本指スクロールを含む）の速度を上書きする設定です。
+同じ画面の **VFX Graph > Zoom Step Size** と **UI Builder > Zoom Step Size** は、このプラグインが標準スクロールズーム（Control + 2本指スクロールを含む）の速度を上書きする設定です。
 ピンチ感度とは独立し、値を小さくすると遅くなります。
-**Restore defaults** でリセットされ、**Enable** または **Graph / Timeline integration** をOFFにするとGraphの元のズーム幅に戻ります。
+**Restore defaults** でリセットされ、**Enable** または **Graph / Timeline integration** をOFFにすると各ウィンドウの元のズーム幅に戻ります。
 `Window > Trackpad Navigation > Diagnostics` で入力を確認し、`Copy diagnostic report` で報告用情報をコピーできます。
 
 ## 対応と制約
@@ -58,25 +58,7 @@ Game Viewは停止中・一時停止中の表示をパン・ズームできま�
 ProfilerのCPU Timelineでは時間軸のパン・ズームとスレッドの縦スクロールに対応します。
 上部の計測グラフ・Hierarchy・その他の詳細表示はUnity標準のスクロール操作を使用します。
 
-- Game View／Sprite Editor／Profiler／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
-- Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。
-  Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。
-  GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
-- その他のGraphViewは自動検出します。
-  独自UI Toolkitでは、viewport直下のcontentを登録してください。
-  型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
-
-```csharp
-canvas = new TrackpadNavigation.TrackpadCanvas(viewport, content, new Vector2(0.1f, 4f));
-// ウィンドウ終了時
-canvas?.Dispose();
-```
-
 ## 開発・検証
-
-Sprite Editorは `Tools > Trackpad Navigation > Open Sprite Editor` からサンプルを開けます（2D Spriteパッケージが必要）。
-
-Inspectorのカーブは `Tools > Trackpad Navigation > Open Curve Inspector` でサンプルを選択し、Inspectorの **Curve** 欄をクリックして試せます。
 
 サンプルは `Assets/TrackpadExamples` にあります。
 `Tools > Trackpad Navigation > Open ...` から各Editorで開けます。

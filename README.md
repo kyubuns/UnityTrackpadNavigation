@@ -29,9 +29,9 @@ If Scene View navigation feels choppy after the first installation, restart the 
 Adjust sensitivity, inversion, momentum, and enable/disable the plugin in `Preferences > Trackpad Navigation`.
 The same page also exposes Unity's **Shader Graph > Zoom Step Size** for standard scroll zoom.
 This changes Unity's own preference; Trackpad Navigation's **Restore defaults** does not reset it.
-VFX Graph's **Zoom Step Size** on the same page is a Trackpad Navigation override for standard scroll zoom (including Control + two-finger scrolling), separate from pinch sensitivity.
+The **VFX Graph > Zoom Step Size** and **UI Builder > Zoom Step Size** settings on the same page are Trackpad Navigation overrides for standard scroll zoom (including Control + two-finger scrolling), separate from pinch sensitivity.
 Lower values zoom more slowly.
-It is reset by **Restore defaults**; turning off **Enable** or **Graph / Timeline integration** restores the graph's original scroll step.
+They are reset by **Restore defaults**; turning off **Enable** or **Graph / Timeline integration** restores each window's original scroll step.
 Inspect input in `Window > Trackpad Navigation > Diagnostics`.
 Use `Copy diagnostic report` to copy details for a bug report.
 
@@ -60,25 +60,7 @@ During playback, game input takes priority; zoom and image bounds follow Unityâ€
 In the Profiler CPU Timeline, slide to pan time and scroll threads, and pinch to zoom time.
 Overview charts, Hierarchy, and other detail views keep Unityâ€™s standard scrolling.
 
-- Game View, Sprite Editor, Profiler, Animator, Animation, Curve Editor, Timeline, and UI Builder use internal Unity APIs and may need updates when Unity changes.
-- Scene targeting uses public [PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html) and [MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html) APIs.
-  Mesh picking falls back to colliders; empty space uses the current pivot for orbit and its depth plane for zoom.
-  GPU-only geometry and deformations, and non-triangle meshes, are not supported for surface picking.
-- Other GraphView canvases are detected automatically.
-  For custom UI Toolkit canvases, register a viewport and its immediate content child.
-  Wrap type references and registration code in `#if UNITY_EDITOR_OSX`.
-
-```csharp
-canvas = new TrackpadNavigation.TrackpadCanvas(viewport, content, new Vector2(0.1f, 4f));
-// When the window closes
-canvas?.Dispose();
-```
-
 ## Development
-
-Open the Sprite Editor sample from `Tools > Trackpad Navigation > Open Sprite Editor` (requires the 2D Sprite package).
-
-To try Inspector curves, select `Tools > Trackpad Navigation > Open Curve Inspector`, then click the **Curve** field in the Inspector.
 
 Example scenes, animation clips, and graphs are in `Assets/TrackpadExamples`.
 Open them from `Tools > Trackpad Navigation > Open ...`.
