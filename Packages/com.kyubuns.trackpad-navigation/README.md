@@ -37,6 +37,7 @@ Tested with macOS 26.6.2 and Unity 6000.3.23f1 on Apple Silicon.
 
 - Scene View
 - Game View
+- Profiler (CPU Usage → Timeline)
 - Timeline
 - Animator
 - Animation (Dope Sheet / Curves)
@@ -49,7 +50,9 @@ Orbit and look are available in Scene View. Double-tap focus is available in Sce
 
 Game View supports pan and zoom while stopped or paused. During playback, game input takes priority; zoom and image bounds follow Unity’s standard limits.
 
-- Game View, Animator, Animation, Curve Editor, Timeline, and UI Builder use internal Unity APIs and may need updates when Unity changes.
+In the Profiler CPU Timeline, slide to pan time and scroll threads, and pinch to zoom time. Overview charts, Hierarchy, and other detail views keep Unity’s standard scrolling.
+
+- Game View, Profiler, Animator, Animation, Curve Editor, Timeline, and UI Builder use internal Unity APIs and may need updates when Unity changes.
 - Scene targeting uses public [PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html) and [MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html) APIs. Mesh picking falls back to colliders; empty space uses the current pivot for orbit and its depth plane for zoom. GPU-only geometry and deformations, and non-triangle meshes, are not supported for surface picking.
 - Other GraphView canvases are detected automatically. For custom UI Toolkit canvases, register a viewport and its immediate content child. Wrap type references and registration code in `#if UNITY_EDITOR_OSX`.
 

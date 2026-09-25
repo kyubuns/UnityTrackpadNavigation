@@ -37,6 +37,7 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 
 - Scene View
 - Game View
+- Profiler（CPU Usage → Timeline）
 - Timeline
 - Animator
 - Animation（ドープシート／カーブ）
@@ -49,7 +50,9 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 
 Game Viewは停止中・一時停止中の表示をパン・ズームできます。再生中はゲーム入力を優先し、拡大率と画像端はUnity標準の範囲に制限します。
 
-- Game View／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
+ProfilerのCPU Timelineでは時間軸のパン・ズームとスレッドの縦スクロールに対応します。上部の計測グラフ・Hierarchy・その他の詳細表示はUnity標準のスクロール操作を使用します。
+
+- Game View／Profiler／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
 - Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
 - その他のGraphViewは自動検出します。独自UI Toolkitでは、viewport直下のcontentを登録してください。型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
 
