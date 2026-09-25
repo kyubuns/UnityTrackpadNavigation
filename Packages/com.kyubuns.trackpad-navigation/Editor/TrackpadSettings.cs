@@ -19,6 +19,7 @@ namespace TrackpadNavigation
         public bool SceneIntegration = true;
         public bool GraphIntegration = true;
         public float VfxZoomStepSize = ContentZoomer.DefaultScaleStep;
+        public float BuilderZoomStepSize = BuilderScrollZoom.DefaultStep;
 
         public void Validate()
         {
@@ -26,6 +27,7 @@ namespace TrackpadNavigation
             ZoomSensitivity = NavigationMath.Sensitivity(ZoomSensitivity);
             OrbitSensitivity = NavigationMath.Sensitivity(OrbitSensitivity);
             VfxZoomStepSize = float.IsNaN(VfxZoomStepSize) || float.IsInfinity(VfxZoomStepSize) ? ContentZoomer.DefaultScaleStep : Mathf.Clamp(VfxZoomStepSize, 0.001f, 1);
+            BuilderZoomStepSize = float.IsNaN(BuilderZoomStepSize) || float.IsInfinity(BuilderZoomStepSize) ? BuilderScrollZoom.DefaultStep : Mathf.Clamp(BuilderZoomStepSize, 0.001f, 1);
         }
 
         public static TrackpadPreferences FromJson(string json)
@@ -59,6 +61,7 @@ namespace TrackpadNavigation
             EditorPrefs.SetString(Key, JsonUtility.ToJson(Current));
             TrackpadNavigator.ClearTarget();
             VfxGraphZoom.Refresh();
+            BuilderScrollZoom.Refresh();
         }
         public static void Reset()
         {

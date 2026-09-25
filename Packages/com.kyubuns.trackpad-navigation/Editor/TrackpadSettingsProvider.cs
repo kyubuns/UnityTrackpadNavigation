@@ -23,6 +23,7 @@ namespace TrackpadNavigation
                 "momentum",
                 "Shader Graph",
                 "VFX Graph",
+                "UI Builder",
                 "Zoom Step Size"
             },
             guiHandler = _ => Draw()
@@ -52,6 +53,13 @@ namespace TrackpadNavigation
             using (new EditorGUI.DisabledScope(!value.Enabled || !value.GraphIntegration))
             {
                 value.VfxZoomStepSize = EditorGUILayout.Slider(new GUIContent("Zoom Step Size", "Trackpad Navigation override. Restore defaults resets this to Unity's standard scroll step."), value.VfxZoomStepSize, 0.001f, 1);
+            }
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("UI Builder", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox("Controls UI Builder's standard scroll zoom, including Control + two-finger scrolling. Lower values zoom more slowly. Requires Enable and Graph / Timeline integration. Pinch uses Zoom sensitivity above.", MessageType.Info);
+            using (new EditorGUI.DisabledScope(!value.Enabled || !value.GraphIntegration))
+            {
+                value.BuilderZoomStepSize = EditorGUILayout.Slider(new GUIContent("Zoom Step Size", "Trackpad Navigation override. Default: 0.05 (Unity's standard zoom levels)."), value.BuilderZoomStepSize, 0.001f, 1);
             }
             if (EditorGUI.EndChangeCheck())
             {
