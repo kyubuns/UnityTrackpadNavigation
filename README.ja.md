@@ -27,8 +27,11 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 | Command + 2本指スライド | カメラ位置を保って見回す |
 
 `Preferences > Trackpad Navigation` で有効化・感度・反転・慣性スクロールを調整できます。
-同じ画面でUnity標準の **Shader Graph > Zoom Step Size**（スクロールズームの速度）も変更できます。Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore defaults** の対象には含みません。
-同じ画面の **VFX Graph > Zoom Step Size** は、このプラグインが標準スクロールズーム（Control + 2本指スクロールを含む）の速度を上書きする設定です。ピンチ感度とは独立し、値を小さくすると遅くなります。**Restore defaults** でリセットされ、**Enable** または **Graph / Timeline integration** をOFFにするとGraphの元のズーム幅に戻ります。
+同じ画面でUnity標準の **Shader Graph > Zoom Step Size**（スクロールズームの速度）も変更できます。
+Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore defaults** の対象には含みません。
+同じ画面の **VFX Graph > Zoom Step Size** は、このプラグインが標準スクロールズーム（Control + 2本指スクロールを含む）の速度を上書きする設定です。
+ピンチ感度とは独立し、値を小さくすると遅くなります。
+**Restore defaults** でリセットされ、**Enable** または **Graph / Timeline integration** をOFFにするとGraphの元のズーム幅に戻ります。
 `Window > Trackpad Navigation > Diagnostics` で入力を確認し、`Copy diagnostic report` で報告用情報をコピーできます。
 
 ## 対応と制約
@@ -49,13 +52,19 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 
 回転・見回しはScene View、ダブルタップのフォーカスはScene View／GraphViewに対応します。
 
-Game Viewは停止中・一時停止中の表示をパン・ズームできます。再生中はゲーム入力を優先し、拡大率と画像端はUnity標準の範囲に制限します。
+Game Viewは停止中・一時停止中の表示をパン・ズームできます。
+再生中はゲーム入力を優先し、拡大率と画像端はUnity標準の範囲に制限します。
 
-ProfilerのCPU Timelineでは時間軸のパン・ズームとスレッドの縦スクロールに対応します。上部の計測グラフ・Hierarchy・その他の詳細表示はUnity標準のスクロール操作を使用します。
+ProfilerのCPU Timelineでは時間軸のパン・ズームとスレッドの縦スクロールに対応します。
+上部の計測グラフ・Hierarchy・その他の詳細表示はUnity標準のスクロール操作を使用します。
 
 - Game View／Sprite Editor／Profiler／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
-- Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
-- その他のGraphViewは自動検出します。独自UI Toolkitでは、viewport直下のcontentを登録してください。型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
+- Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。
+  Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。
+  GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
+- その他のGraphViewは自動検出します。
+  独自UI Toolkitでは、viewport直下のcontentを登録してください。
+  型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
 
 ```csharp
 canvas = new TrackpadNavigation.TrackpadCanvas(viewport, content, new Vector2(0.1f, 4f));
@@ -69,9 +78,14 @@ Sprite Editorは `Tools > Trackpad Navigation > Open Sprite Editor` からサン
 
 Inspectorのカーブは `Tools > Trackpad Navigation > Open Curve Inspector` でサンプルを選択し、Inspectorの **Curve** 欄をクリックして試せます。
 
-サンプルは `Assets/TrackpadExamples` にあります。`Tools > Trackpad Navigation > Open ...` から各Editorで開けます。Shader GraphとVFX GraphのサンプルはUnityのテンプレートを使用し、同じフォルダーにライセンスを同梱しています。
-録画用には、このプロジェクトの `Window > Trackpad Navigation > Live View` で指位置と修飾キーを表示できます。`Assets/Editor/TrackpadLiveView` に置いた開発用ツールで、UPMパッケージには含みません。専用Nativeのビルドは `Assets/Editor/TrackpadLiveView/Native~/build.sh` で行います。
-Test RunnerのEditModeで `TrackpadNavigation.Tests` を実行できます。外部プロジェクトからテストする場合は、manifestの `testables` にパッケージ名を追加してください。
+サンプルは `Assets/TrackpadExamples` にあります。
+`Tools > Trackpad Navigation > Open ...` から各Editorで開けます。
+Shader GraphとVFX GraphのサンプルはUnityのテンプレートを使用し、同じフォルダーにライセンスを同梱しています。
+録画用には、このプロジェクトの `Window > Trackpad Navigation > Live View` で指位置と修飾キーを表示できます。
+`Assets/Editor/TrackpadLiveView` に置いた開発用ツールで、UPMパッケージには含みません。
+専用Nativeのビルドは `Assets/Editor/TrackpadLiveView/Native~/build.sh` で行います。
+Test RunnerのEditModeで `TrackpadNavigation.Tests` を実行できます。
+外部プロジェクトからテストする場合は、manifestの `testables` にパッケージ名を追加してください。
 
 Nativeを変更する場合は、Apple Silicon MacとXcode Command Line Toolsで、リポジトリ直下から次を実行し、Unityを再起動します。
 
@@ -84,7 +98,8 @@ Nativeを変更する場合は、Apple Silicon MacとXcode Command Line Toolsで
 
 ### ピンチでUnityのウィンドウを最大化できなくなった
 
-プラグインが有効な間は、対応外ウィンドウや個別のintegrationをOFFにしたビューも含め、Unity Editor全体で標準のピンチ操作を無効にします。標準の操作へ戻すには、`Preferences > Trackpad Navigation` の **Enable** をOFFにしてください。
+プラグインが有効な間は、対応外ウィンドウや個別のintegrationをOFFにしたビューも含め、Unity Editor全体で標準のピンチ操作を無効にします。
+標準の操作へ戻すには、`Preferences > Trackpad Navigation` の **Enable** をOFFにしてください。
 
 ### ピンチでズームが効かない
 
