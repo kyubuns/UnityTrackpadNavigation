@@ -37,6 +37,7 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 
 - Scene View
 - Game View
+- Sprite Editor
 - Profiler（CPU Usage → Timeline）
 - Timeline
 - Animator
@@ -52,7 +53,7 @@ Game Viewは停止中・一時停止中の表示をパン・ズームできま�
 
 ProfilerのCPU Timelineでは時間軸のパン・ズームとスレッドの縦スクロールに対応します。上部の計測グラフ・Hierarchy・その他の詳細表示はUnity標準のスクロール操作を使用します。
 
-- Game View／Profiler／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
+- Game View／Sprite Editor／Profiler／Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
 - Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
 - その他のGraphViewは自動検出します。独自UI Toolkitでは、viewport直下のcontentを登録してください。型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
 
@@ -63,6 +64,8 @@ canvas?.Dispose();
 ```
 
 ## 開発・検証
+
+Sprite Editorは `Tools > Trackpad Navigation > Open Sprite Editor` からサンプルを開けます（2D Spriteパッケージが必要）。
 
 Inspectorのカーブは `Tools > Trackpad Navigation > Open Curve Inspector` でサンプルを選択し、Inspectorの **Curve** 欄をクリックして試せます。
 

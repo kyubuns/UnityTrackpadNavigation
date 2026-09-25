@@ -35,6 +35,12 @@ public static class TrackpadValidation
     public static void OpenShader() => OpenAsset(".shadergraph");
     [MenuItem("Tools/Trackpad Navigation/Open VFX Graph")]
     public static void OpenVfx() => OpenAsset(".vfx");
+    [MenuItem("Tools/Trackpad Navigation/Open Sprite Editor")]
+    public static void OpenSprite()
+    {
+        Selection.activeObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Texture2D>(Folder + "/Navigation.png");
+        EditorApplication.ExecuteMenuItem("Window/2D/Sprite Editor");
+    }
     [MenuItem("Tools/Trackpad Navigation/Open UI Builder")]
     public static void OpenBuilder() => OpenAsset(".uxml");
 
