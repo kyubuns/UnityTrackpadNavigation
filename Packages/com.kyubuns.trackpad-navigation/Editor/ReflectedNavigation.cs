@@ -48,6 +48,8 @@ namespace TrackpadNavigation
         {
             switch (window.GetType().FullName)
             {
+                case "UnityEditor.GameView":
+                    return GameViewNavigation.TryCreate(window);
                 case "UnityEditor.Graphs.AnimatorControllerTool":
                     return AnimatorNavigation.TryCreate(window);
                 case "UnityEditor.AnimationWindow":
