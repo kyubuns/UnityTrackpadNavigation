@@ -39,13 +39,14 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 - Timeline
 - Animator
 - Animation（ドープシート／カーブ）
+- Curve Editor（Inspectorのカーブ欄から開くウィンドウ）
 - Shader Graph
 - VFX Graph
 - UI Builder
 
 回転・見回しはScene View、ダブルタップのフォーカスはScene View／GraphViewに対応します。
 
-- Animator／Animation／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
+- Animator／Animation／Curve Editor／Timeline／UI BuilderはUnity内部APIを使うため、Unityの更新に伴い対応が必要になる場合があります。
 - Sceneの表面取得には公開の[PickGameObject](https://docs.unity3d.com/ScriptReference/HandleUtility.PickGameObject.html)と[MeshUtility.AcquireReadOnlyMeshData](https://docs.unity3d.com/ScriptReference/MeshUtility.AcquireReadOnlyMeshData.html)を使用します。Meshを取得できない対象はCollider、空白では回転に現在のpivot、ズームにpivotの深度面を使います。GPUのみで描画・変形するGeometryや三角形以外のMeshは表面取得の対象外です。
 - その他のGraphViewは自動検出します。独自UI Toolkitでは、viewport直下のcontentを登録してください。型への参照と登録コードは `#if UNITY_EDITOR_OSX` で囲みます。
 
@@ -56,6 +57,8 @@ canvas?.Dispose();
 ```
 
 ## 開発・検証
+
+Inspectorのカーブは `Tools > Trackpad Navigation > Open Curve Inspector` でサンプルを選択し、Inspectorの **Curve** 欄をクリックして試せます。
 
 サンプルは `Assets/TrackpadExamples` にあります。`Tools > Trackpad Navigation > Open ...` から各Editorで開けます。Shader GraphとVFX GraphのサンプルはUnityのテンプレートを使用し、同じフォルダーにライセンスを同梱しています。
 録画用には、このプロジェクトの `Window > Trackpad Navigation > Live View` で指位置と修飾キーを表示できます。`Assets/Editor/TrackpadLiveView` に置いた開発用ツールで、UPMパッケージには含みません。専用Nativeのビルドは `Assets/Editor/TrackpadLiveView/Native~/build.sh` で行います。

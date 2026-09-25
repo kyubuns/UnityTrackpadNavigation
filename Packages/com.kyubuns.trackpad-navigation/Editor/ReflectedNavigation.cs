@@ -52,6 +52,8 @@ namespace TrackpadNavigation
                     return AnimatorNavigation.TryCreate(window);
                 case "UnityEditor.AnimationWindow":
                     return AnimationNavigation.TryCreate(window);
+                case "UnityEditor.CurveEditorWindow":
+                    return CurveNavigation.TryCreate(window);
                 case "UnityEditor.Timeline.TimelineWindow":
                     return TimelineNavigation.TryCreate(window);
             }
