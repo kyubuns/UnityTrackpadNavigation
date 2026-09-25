@@ -3,21 +3,21 @@ using UnityEngine;
 
 namespace TrackpadNavigation
 {
-    internal sealed class SceneViewNavigation : INavigationTarget
+    internal sealed class SceneViewNavigation : NavigationTarget
     {
         readonly SceneView view;
         Vector3? orbitPoint;
         Vector3? zoomPoint;
         SceneGesture scrollAction;
-        public EditorWindow Window => view;
-        public string Description => "Scene View — Pan / Zoom / Orbit / Look";
-        public bool SupportsLook => true;
-        public bool SupportsSmartZoom => true;
-        public SceneViewNavigation(SceneView view) => this.view = view;
+        public override string Description => "Scene View — Pan / Zoom / Orbit / Look";
+        public override bool SupportsLook => true;
+        public override bool SupportsSmartZoom => true;
+        public SceneViewNavigation(SceneView view) : base(view) => this.view = view;
+        protected override bool IsCurrent => view.camera != null;
 
-        public bool HitTest(Vector2 localPoint)
+        protected override bool ContainsPoint(Vector2 localPoint)
         {
-            if (!view || !view.camera || !new Rect(Vector2.zero, view.position.size).Contains(localPoint))
+            if (!new Rect(Vector2.zero, view.position.size).Contains(localPoint))
             {
                 return false;
             }
@@ -26,13 +26,8 @@ namespace TrackpadNavigation
             return picked != null && !NavigationHitTest.IsControl(picked, view.rootVisualElement);
         }
 
-        public void Apply(TrackpadEvent value, TrackpadPreferences settings)
+        protected override void ApplyInput(TrackpadEvent value, TrackpadPreferences settings)
         {
-            if (!view || !view.camera)
-            {
-                return;
-            }
-
             if (value.Kind == GestureKind.SmartZoom)
             {
                 orbitPoint = zoomPoint = null;

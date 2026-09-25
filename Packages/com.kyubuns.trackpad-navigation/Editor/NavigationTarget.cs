@@ -14,6 +14,10 @@ namespace TrackpadNavigation
         {
             get;
         }
+        bool IsAvailable
+        {
+            get;
+        }
         bool SupportsLook
         {
             get;
@@ -24,6 +28,40 @@ namespace TrackpadNavigation
         }
         bool HitTest(Vector2 localPoint);
         void Apply(TrackpadEvent value, TrackpadPreferences settings);
+    }
+
+    internal abstract class NavigationTarget : INavigationTarget
+    {
+        public EditorWindow Window
+        {
+            get;
+        }
+        public abstract string Description
+        {
+            get;
+        }
+        public virtual bool SupportsLook => false;
+        public virtual bool SupportsSmartZoom => false;
+        public bool IsAvailable => Window != null && IsCurrent;
+        protected abstract bool IsCurrent
+        {
+            get;
+        }
+
+        protected NavigationTarget(EditorWindow window) => Window = window;
+
+        // 寿命とヒット判定を分離する。ポインタがUI上へ動いても、開始済み操作の入力先は保持する。
+        public bool HitTest(Vector2 localPoint) => IsAvailable && ContainsPoint(localPoint);
+        public void Apply(TrackpadEvent value, TrackpadPreferences settings)
+        {
+            // ネイティブのキューに残った入力を、閉じたウィンドウや切替前のビューへ適用しない。
+            if (IsAvailable)
+            {
+                ApplyInput(value, settings);
+            }
+        }
+        protected abstract bool ContainsPoint(Vector2 localPoint);
+        protected abstract void ApplyInput(TrackpadEvent value, TrackpadPreferences settings);
     }
 
     internal static class NavigationHitTest
@@ -51,7 +89,7 @@ namespace TrackpadNavigation
         public static VisualElement Pick(EditorWindow window, Vector2 localPoint)
         {
             var root = window.rootVisualElement;
-            return root.panel?.Pick(root.LocalToWorld(localPoint));
+            return root.panel?.Pick(NavigationCoordinates.ToPanel(window, localPoint));
         }
     }
 }

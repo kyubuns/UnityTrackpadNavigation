@@ -73,34 +73,26 @@ namespace TrackpadNavigation
 
         internal INavigationTarget Target(EditorWindow window) => new CanvasTarget(window, this);
 
-        sealed class CanvasTarget : INavigationTarget
+        sealed class CanvasTarget : NavigationTarget
         {
             readonly TrackpadCanvas canvas;
-            public EditorWindow Window
+            public override string Description => "UI Toolkit — registered canvas";
+            public CanvasTarget(EditorWindow window, TrackpadCanvas canvas) : base(window)
             {
-                get;
-            }
-            public string Description => "UI Toolkit — registered canvas";
-            public bool SupportsLook => false;
-            public bool SupportsSmartZoom => false;
-            public CanvasTarget(EditorWindow window, TrackpadCanvas canvas)
-            {
-                Window = window;
                 this.canvas = canvas;
             }
-            public bool HitTest(Vector2 localPoint)
-            {
-                if (canvas.viewport.panel == null || !Registrations.TryGetValue(canvas.viewport, out var registration) || !ReferenceEquals(registration, canvas))
-                {
-                    return false;
-                }
+            protected override bool IsCurrent => canvas.viewport.panel != null && canvas.content.parent == canvas.viewport &&
+                (Window.rootVisualElement == canvas.viewport || Window.rootVisualElement.Contains(canvas.viewport)) &&
+                Registrations.TryGetValue(canvas.viewport, out var registration) && ReferenceEquals(registration, canvas);
 
-                var point = Window.rootVisualElement.LocalToWorld(localPoint);
+            protected override bool ContainsPoint(Vector2 localPoint)
+            {
+                var point = NavigationCoordinates.ToPanel(Window, localPoint);
                 var picked = canvas.viewport.panel.Pick(point);
                 return picked != null && (picked == canvas.viewport || canvas.viewport.Contains(picked)) &&
                     canvas.viewport.worldBound.Contains(point) && !NavigationHitTest.IsControl(picked, canvas.viewport);
             }
-            public void Apply(TrackpadEvent value, TrackpadPreferences settings)
+            protected override void ApplyInput(TrackpadEvent value, TrackpadPreferences settings)
             {
                 var position = canvas.Position;
                 float scale = canvas.Scale;
@@ -111,7 +103,7 @@ namespace TrackpadNavigation
                 else if (value.Kind == GestureKind.Magnify)
                 {
                     float next = Mathf.Clamp(scale * NavigationMath.ZoomFactor(value, settings), canvas.scaleLimits.x, canvas.scaleLimits.y);
-                    var point = Window.rootVisualElement.LocalToWorld(value.ScreenPosition - Window.position.position);
+                    var point = NavigationCoordinates.ToPanel(Window, value.ScreenPosition - Window.position.position);
                     var anchor = canvas.viewport.WorldToLocal(point) - canvas.content.layout.position;
                     position = NavigationMath.ZoomTranslation(position, anchor, next / scale);
                     scale = next;

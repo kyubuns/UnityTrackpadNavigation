@@ -4,25 +4,23 @@ using UnityEngine.UIElements;
 
 namespace TrackpadNavigation
 {
-    internal sealed class SpriteNavigation : ReflectedNavigation
+    internal sealed class SpriteNavigation : NavigationTarget
     {
         readonly VisualElement canvas;
-        readonly VisualElement windowRoot;
         readonly object texture;
         public override string Description => "Sprite Editor — pan / cursor zoom";
 
         SpriteNavigation(EditorWindow window, VisualElement canvas, object texture) : base(window)
         {
             this.canvas = canvas;
-            windowRoot = (VisualElement)EditorMember.Get(window, "baseRootVisualElement");
             this.texture = texture;
         }
 
-        public new static INavigationTarget TryCreate(EditorWindow window)
+        public static INavigationTarget TryCreate(EditorWindow window)
         {
             var canvas = window.rootVisualElement.Q<IMGUIContainer>("mainViewIMGUIElement");
             var texture = EditorMember.Get(window, "previewTexture");
-            if (!(EditorMember.Get(window, "baseRootVisualElement") is VisualElement) || canvas == null || texture == null || !(EditorMember.Get(window, "windowDimension") is Rect) ||
+            if (canvas == null || texture == null || !(EditorMember.Get(window, "windowDimension") is Rect) ||
                 !EditorMember.Writable(window, "zoomLevel", typeof(float)) || !EditorMember.Writable(window, "scrollPosition", typeof(Vector2)))
             {
                 return null;
@@ -30,28 +28,20 @@ namespace TrackpadNavigation
             return new SpriteNavigation(window, canvas, texture);
         }
 
-        bool IsCurrent => Window != null && canvas.panel != null && ReferenceEquals(texture, EditorMember.Get(Window, "previewTexture"));
-        Vector2 CanvasPoint(Vector2 windowPoint) => canvas.WorldToLocal(windowRoot.LocalToWorld(windowPoint));
+        protected override bool IsCurrent => canvas.panel != null && ReferenceEquals(texture, EditorMember.Get(Window, "previewTexture"));
+        Vector2 CanvasPoint(Vector2 windowPoint) => NavigationCoordinates.ToLocal(Window, canvas, windowPoint);
 
-        public override bool HitTest(Vector2 localPoint)
+        protected override bool ContainsPoint(Vector2 localPoint)
         {
-            if (!IsCurrent)
-            {
-                return false;
-            }
             var rect = (Rect)EditorMember.Get(Window, "windowDimension");
-            var picked = canvas.panel.Pick(windowRoot.LocalToWorld(localPoint));
+            var picked = NavigationHitTest.Pick(Window, localPoint);
             // 画像の上に重なるSprite Inspectorやモジュール固有のUIを除外する。
             return rect.width > 1 && rect.height > 1 && rect.Contains(CanvasPoint(localPoint)) &&
                 (picked == canvas || (picked != null && canvas.Contains(picked)));
         }
 
-        public override void Apply(TrackpadEvent value, TrackpadPreferences settings)
+        protected override void ApplyInput(TrackpadEvent value, TrackpadPreferences settings)
         {
-            if (!IsCurrent)
-            {
-                return;
-            }
             var scroll = (Vector2)EditorMember.Get(Window, "scrollPosition");
             float scale = (float)EditorMember.Get(Window, "zoomLevel");
             if (!NavigationMath.IsFinite(scale) || !NavigationMath.IsFinite(scroll) || scale <= 0)

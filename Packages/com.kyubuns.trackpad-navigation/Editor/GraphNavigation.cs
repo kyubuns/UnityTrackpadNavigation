@@ -5,33 +5,24 @@ using UnityEngine.UIElements;
 
 namespace TrackpadNavigation
 {
-    internal sealed class GraphNavigation : INavigationTarget
+    internal sealed class GraphNavigation : NavigationTarget
     {
-        public EditorWindow Window
-        {
-            get;
-        }
         readonly GraphView graph;
         Vector2 remainder;
         Vector2 lastApplied;
-        public string Description => $"{Window.titleContent.text} — GraphView";
-        public bool SupportsLook => false;
-        public bool SupportsSmartZoom => true;
+        public override string Description => $"{Window.titleContent.text} — GraphView";
+        public override bool SupportsSmartZoom => true;
 
-        public GraphNavigation(EditorWindow window, GraphView graph)
+        public GraphNavigation(EditorWindow window, GraphView graph) : base(window)
         {
-            Window = window;
             this.graph = graph;
         }
 
-        public bool HitTest(Vector2 localPoint)
-        {
-            if (graph.panel == null)
-            {
-                return false;
-            }
+        protected override bool IsCurrent => graph.panel != null && graph.parent != null && Window.rootVisualElement.Contains(graph);
 
-            var point = Window.rootVisualElement.LocalToWorld(localPoint);
+        protected override bool ContainsPoint(Vector2 localPoint)
+        {
+            var point = NavigationCoordinates.ToPanel(Window, localPoint);
             if (!graph.worldBound.Contains(point))
             {
                 return false;
@@ -46,7 +37,7 @@ namespace TrackpadNavigation
             return picked is Node || picked.GetFirstAncestorOfType<Node>() != null || !NavigationHitTest.IsControl(picked, graph);
         }
 
-        public void Apply(TrackpadEvent value, TrackpadPreferences settings)
+        protected override void ApplyInput(TrackpadEvent value, TrackpadPreferences settings)
         {
             var content = graph.contentViewContainer;
             var translate = content.style.translate.value;
@@ -84,7 +75,7 @@ namespace TrackpadNavigation
                 float minimum = graph.minScale > 0 ? graph.minScale : 0.05f;
                 float maximum = graph.maxScale > minimum ? graph.maxScale : 8f;
                 float next = Mathf.Clamp(scale.x * NavigationMath.ZoomFactor(value, settings), minimum, maximum);
-                var panelPoint = Window.rootVisualElement.LocalToWorld(value.ScreenPosition - Window.position.position);
+                var panelPoint = NavigationCoordinates.ToPanel(Window, value.ScreenPosition - Window.position.position);
                 var anchor = graph.contentViewContainer.parent.WorldToLocal(panelPoint) - graph.contentViewContainer.layout.position;
                 position = NavigationMath.ZoomTranslation(position, anchor, next / scale.x);
                 scale = new Vector3(next, next, 1);
@@ -102,42 +93,6 @@ namespace TrackpadNavigation
             // GraphViewのピクセル丸めで細かな移動が消えないよう、端数を次の入力へ持ち越す。
             remainder = (Vector2)position - lastApplied;
             Window.Repaint();
-        }
-    }
-
-    internal static class NavigationTargets
-    {
-        public static INavigationTarget Resolve(EditorWindow window, Vector2 localPoint, TrackpadPreferences settings)
-        {
-            if (!window)
-            {
-                return null;
-            }
-
-            if (window is SceneView scene)
-            {
-                return settings.SceneIntegration ? new SceneViewNavigation(scene) : null;
-            }
-
-            if (!settings.GraphIntegration)
-            {
-                return null;
-            }
-
-            var picked = NavigationHitTest.Pick(window, localPoint);
-            for (var element = picked; element != null; element = element.parent)
-            {
-                if (TrackpadCanvas.Registrations.TryGetValue(element, out var canvas))
-                {
-                    return canvas.Target(window);
-                }
-
-                if (element is GraphView graph)
-                {
-                    return new GraphNavigation(window, graph);
-                }
-            }
-            return ReflectedNavigation.TryCreate(window);
         }
     }
 }

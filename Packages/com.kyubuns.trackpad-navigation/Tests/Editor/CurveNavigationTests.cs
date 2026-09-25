@@ -87,5 +87,81 @@ namespace TrackpadNavigation.Tests
                 }
             }
         }
+
+        [UnityTest]
+        public IEnumerator InspectorCurveWindowKeepsCursorPointAtMaximumZoom()
+        {
+            var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.CurveEditorWindow", true);
+            var settingsType = typeof(EditorWindow).Assembly.GetType("UnityEditor.CurveEditorSettings", true);
+            var window = (EditorWindow)type.GetProperty("instance").GetValue(null);
+            var curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+            var keys = curve.keys;
+            int changes = 0;
+            try
+            {
+                type.GetMethod("Show", new[]
+                {
+                    typeof(Action<AnimationCurve>), settingsType
+                }).Invoke(window, new object[]
+                {
+                    new Action<AnimationCurve>(_ => ++changes), null
+                });
+                type.GetProperty("curve").SetValue(null, curve);
+                type.GetMethod("FrameClip").Invoke(window, null);
+                yield return null;
+                yield return null;
+
+                var editor = EditorMember.Get(window, "m_CurveEditor");
+                var rect = (Rect)EditorMember.Get(editor, "drawRect");
+                var scale = (Vector2)EditorMember.Get(editor, "scale");
+                var setTransform = EditorMember.Method(editor, "SetTransform", typeof(Vector2), typeof(Vector2));
+                // 最大倍率は余白などにも依存するため、制約値を複製せずUnityに確定させる。
+                setTransform.Invoke(editor, new object[]
+                {
+                    Vector2.zero, scale * 1000000
+                });
+                var maximumScale = (Vector2)EditorMember.Get(editor, "scale");
+                Assert.That(maximumScale.x, Is.GreaterThan(scale.x));
+                Assert.That(Mathf.Abs(maximumScale.y), Is.GreaterThan(Mathf.Abs(scale.y)));
+                setTransform.Invoke(editor, new object[]
+                {
+                    Vector2.zero, maximumScale
+                });
+                var translation = (Vector2)EditorMember.Get(editor, "translation");
+                maximumScale = (Vector2)EditorMember.Get(editor, "scale");
+
+                var anchor = rect.size * 0.35f;
+                var local = rect.position + anchor;
+                var screen = window.position.position + local;
+                var point = (anchor - translation) / maximumScale;
+                var preferences = new TrackpadPreferences();
+                var target = NavigationTargets.Resolve(window, local, preferences);
+                Assert.That(target, Is.TypeOf<CurveNavigation>());
+                Assert.That(target.HitTest(local), Is.True);
+                var pinch = new TrackpadEvent
+                {
+                    Kind = GestureKind.Magnify, Magnification = 0.01, ScreenX = screen.x, ScreenY = screen.y
+                };
+                for (int i = 0; i < 12; ++i)
+                {
+                    target.Apply(pinch, preferences);
+                }
+
+                var nextScale = (Vector2)EditorMember.Get(editor, "scale");
+                var nextTranslation = (Vector2)EditorMember.Get(editor, "translation");
+                Assert.That(Vector2.Distance(nextScale / maximumScale, Vector2.one), Is.LessThan(0.00001f), "Further pinches must stay at Unity's maximum zoom");
+                Assert.That(Vector2.Distance((anchor - nextTranslation) / nextScale, point), Is.LessThan(0.00001f), "Pinching at the zoom limit must preserve the point under the cursor");
+                Assert.That(Vector2.Distance(nextTranslation, translation), Is.LessThan(0.01f), "Pinching at the zoom limit must not pan the view");
+                Assert.That(curve.keys, Is.EqualTo(keys));
+                Assert.That(changes, Is.Zero);
+            }
+            finally
+            {
+                if (window != null)
+                {
+                    window.Close();
+                }
+            }
+        }
     }
 }

@@ -25,7 +25,11 @@
 - OrbitのPOIも開始時に固定する。公開Picking＋Mesh読み取りでColliderやRead/Write設定への依存を避ける。Mesh取得不可ならCollider、交点なしならpivotへ戻る。PlaceObjectはグリッドにもヒットするため採用しない。
 - 画面端のPOIを中央へ寄せず、視点と構図を維持する。終了・Momentum入力は指を離す前の操作種別を維持し、OrbitにはMomentumを適用しない。2D／回転ロック中はPan、Command操作はカメラ位置を保って見回す。
 - Zoomは指数カーブ。GraphViewの丸め端数とShader Graphのゼロ座標復元回避を維持する。Reflectionによる各Editorへの統合はビュー状態に限定する。
+- 新しい入力先は `NavigationTargets` から解決し、`NavigationTarget` を継承する。`IsCurrent` はウィンドウ内の所属・表示モード・編集対象の同一性、`ContainsPoint` は操作領域だけを判定する。キューに残った入力も適用前に寿命を確認し、失効時はNativeの捕捉を解除する。カーソルがUIへ移動しただけでは開始済み操作を失効させない。
+- Window／Panel／要素ローカル間の変換は `NavigationCoordinates` に集約する。Overlay対応ウィンドウではcontent rootにツールバーの余白があるため、Window座標にはbase rootを使う。内部APIの取得・呼出しは `EditorMember` を使い、生成時に必要なメンバーの型とsetterを確認する。
+- ZoomableArea系は `ZoomAreaNavigation` のパン・カーソル基準ズームを共有し、各アダプターには領域・寿命・軸・制約だけを残す。独自の範囲setterや表示モデルを持つビューはそれを維持する。Unityが倍率を制限する場合、適用後の倍率・範囲で中心を補正し、限界での繰り返し入力でも表示をずらさない。
 - AnimationのDope Sheetは時間軸の横移動と階層一覧の共有スクロール、Curvesは時間軸の縦横変換を使う。モード変更時は入力先を作り直し、ルーラー・イベント行・スクロールバーは対象外にする。
+- 独自UI Toolkitの対応は `new TrackpadCanvas(viewport, content, scaleLimits)` でviewport直下のcontentを登録し、ウィンドウ終了時にDisposeする。型参照と登録コードは `#if UNITY_EDITOR_OSX` で囲む。GraphViewは登録不要で自動検出する。
 
 ## 検証
 

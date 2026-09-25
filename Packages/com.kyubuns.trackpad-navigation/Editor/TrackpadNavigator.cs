@@ -75,6 +75,10 @@ namespace TrackpadNavigation
 
             try
             {
+                if (target != null && !target.IsAvailable)
+                {
+                    ClearTarget();
+                }
                 while (TrackpadInput.Poll(out var value))
                 {
                     LastEvent = value;
@@ -108,7 +112,7 @@ namespace TrackpadNavigation
         internal static NativeCapture CaptureFor(EditorWindow window, NativePointer pointer, TrackpadPreferences settings)
         {
             var localPoint = window ? pointer.Position - window.position.position : default;
-            if (window != target?.Window)
+            if (window != target?.Window || (target != null && !target.IsAvailable))
             {
                 ClearTarget();
             }
