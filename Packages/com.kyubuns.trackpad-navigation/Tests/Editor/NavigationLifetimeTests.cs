@@ -91,19 +91,19 @@ namespace TrackpadNavigation.Tests
                     Kind = GestureKind.SmartZoom, ScreenX = screen.x, ScreenY = screen.y
                 }, new TrackpadPreferences());
                 Assert.That(graph.selection, Is.EquivalentTo(new[] { second }));
-                var position = graph.viewTransform.position;
-                var scale = graph.viewTransform.scale;
+                var position = graph.contentViewContainer.style.translate.value;
+                var scale = graph.contentViewContainer.style.scale.value;
                 graph.FrameSelection();
-                Assert.That(graph.viewTransform.position, Is.EqualTo(position));
-                Assert.That(graph.viewTransform.scale, Is.EqualTo(scale));
+                Assert.That(graph.contentViewContainer.style.translate.value, Is.EqualTo(position));
+                Assert.That(graph.contentViewContainer.style.scale.value, Is.EqualTo(scale));
 
                 target.Apply(new TrackpadEvent
                 {
                     Kind = GestureKind.SmartZoom, ScreenX = window.position.x - 10000, ScreenY = window.position.y - 10000
                 }, new TrackpadPreferences());
                 Assert.That(graph.selection, Is.EquivalentTo(new[] { second }));
-                Assert.That(graph.viewTransform.position, Is.EqualTo(position));
-                Assert.That(graph.viewTransform.scale, Is.EqualTo(scale));
+                Assert.That(graph.contentViewContainer.style.translate.value, Is.EqualTo(position));
+                Assert.That(graph.contentViewContainer.style.scale.value, Is.EqualTo(scale));
             }
             finally
             {
@@ -195,14 +195,14 @@ namespace TrackpadNavigation.Tests
                 Assert.That(target.IsAvailable, Is.True);
                 second.rootVisualElement.Add(graph);
                 yield return null;
-                var before = graph.viewTransform.position;
+                var before = graph.contentViewContainer.style.translate.value;
                 Assert.That(graph.panel, Is.Not.Null);
                 Assert.That(target.IsAvailable, Is.False);
                 target.Apply(new TrackpadEvent
                 {
                     Kind = GestureKind.Scroll, DeltaX = 100, DeltaY = 100
                 }, new TrackpadPreferences());
-                Assert.That(graph.viewTransform.position, Is.EqualTo(before));
+                Assert.That(graph.contentViewContainer.style.translate.value, Is.EqualTo(before));
                 second.Close();
                 Assert.That(new GraphNavigation(second, graph).IsAvailable, Is.False);
             }

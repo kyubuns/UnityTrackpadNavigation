@@ -54,6 +54,7 @@ namespace TrackpadNavigation.Tests
                 settings.Enabled = false;
                 BuilderScrollZoom.Refresh();
                 window.Show();
+                window.Focus();
                 yield return null;
                 var owner = window.rootVisualElement.Query<VisualElement>().Where(element => element.GetType().FullName == "Unity.UI.Builder.BuilderViewport").First();
                 Assert.That(owner, Is.Not.Null);

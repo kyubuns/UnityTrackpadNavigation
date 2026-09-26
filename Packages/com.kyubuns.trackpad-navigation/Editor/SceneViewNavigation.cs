@@ -13,11 +13,11 @@ namespace TrackpadNavigation
         public override bool SupportsLook => true;
         public override bool SupportsSmartZoom => true;
         public SceneViewNavigation(SceneView view) : base(view) => this.view = view;
-        protected override bool IsCurrent => view.camera != null;
+        protected override bool IsCurrent => view.camera != null && view.rootVisualElement.panel != null;
 
         protected override bool ContainsPoint(Vector2 localPoint)
         {
-            if (!new Rect(Vector2.zero, view.position.size).Contains(localPoint))
+            if (!view.rootVisualElement.worldBound.Contains(NavigationCoordinates.ToPanel(view, localPoint)))
             {
                 return false;
             }

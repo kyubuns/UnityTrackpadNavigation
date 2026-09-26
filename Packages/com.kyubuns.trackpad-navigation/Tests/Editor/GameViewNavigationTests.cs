@@ -18,19 +18,23 @@ namespace TrackpadNavigation.Tests
                 window.Show();
                 yield return null;
                 yield return null;
+                using var probe = new WindowGuiProbe(window);
+                yield return probe.Wait(window);
+                var origin = probe.ScreenOrigin.Value;
+                var offset = origin - window.position.position;
                 var area = EditorMember.Get(window, "m_ZoomArea");
                 var rect = (Rect)EditorMember.Get(area, "drawRect");
-                var target = NavigationTargets.Resolve(window, rect.center, new TrackpadPreferences());
+                var target = NavigationTargets.Resolve(window, offset + rect.center, new TrackpadPreferences());
                 Assert.That(target, Is.TypeOf<GameViewNavigation>());
-                Assert.That(target.HitTest(rect.center), Is.True);
-                Assert.That(target.HitTest(new Vector2(rect.center.x, 5)), Is.False);
-                Assert.That(NavigationTargets.Resolve(window, rect.center, new TrackpadPreferences
+                Assert.That(target.HitTest(offset + rect.center), Is.True);
+                Assert.That(target.HitTest(offset + new Vector2(rect.center.x, 5)), Is.False);
+                Assert.That(NavigationTargets.Resolve(window, offset + rect.center, new TrackpadPreferences
                 {
                     GraphIntegration = false
                 }), Is.Null);
 
                 var settings = new TrackpadPreferences();
-                var screen = window.position.position + rect.center;
+                var screen = origin + rect.center;
                 var pinch = new TrackpadEvent
                 {
                     Kind = GestureKind.Magnify, Magnification = 0.7, ScreenX = screen.x, ScreenY = screen.y
@@ -47,7 +51,7 @@ namespace TrackpadNavigation.Tests
                 var panned = (Vector2)EditorMember.Get(area, "translation");
                 Assert.That(Vector2.Distance(panned, translation + new Vector2(3.5f, -2.25f)), Is.LessThan(0.001f));
                 var anchor = rect.size * 0.4f;
-                screen = window.position.position + rect.position + anchor;
+                screen = origin + rect.position + anchor;
                 pinch.ScreenX = screen.x;
                 pinch.ScreenY = screen.y;
                 pinch.Magnification = 0.1;
@@ -72,7 +76,7 @@ namespace TrackpadNavigation.Tests
                 var shown = (Rect)EditorMember.Get(area, "shownArea");
                 Assert.That(shown.center.magnitude, Is.LessThan(0.001f));
                 window.Close();
-                Assert.That(target.HitTest(rect.center), Is.False);
+                Assert.That(target.HitTest(offset + rect.center), Is.False);
             }
             finally
             {

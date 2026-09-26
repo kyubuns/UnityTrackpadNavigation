@@ -44,7 +44,7 @@ namespace TrackpadNavigation
             rect.yMin += 2;
             rect.xMax -= 16;
             rect.yMax -= 16;
-            return rect.Contains(localPoint);
+            return rect.Contains(NavigationCoordinates.ToLocal(Window, Window.rootVisualElement, localPoint));
         }
 
         protected override void ApplyInput(TrackpadEvent value, TrackpadPreferences settings)
@@ -64,7 +64,7 @@ namespace TrackpadNavigation
             }
             else if (value.Kind == GestureKind.Magnify)
             {
-                var local = value.ScreenPosition - Window.position.position;
+                var local = NavigationCoordinates.ToLocal(Window, Window.rootVisualElement, value.ScreenPosition - Window.position.position);
                 float fraction = Mathf.Clamp01((local.x - area.x) / width);
                 float anchor = Mathf.Lerp(range.x, range.y, fraction);
                 float nextSpan = Mathf.Clamp(span / NavigationMath.ZoomFactor(value, settings), 0.001f, 9000000f);

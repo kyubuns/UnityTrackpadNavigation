@@ -20,7 +20,8 @@ namespace TrackpadNavigation
             EditorMember.Get(area, "translation") is Vector2 && EditorMember.Get(area, "scale") is Vector2 &&
             EditorMember.Method(area, "SetTransform", typeof(Vector2), typeof(Vector2)) != null;
 
-        protected virtual Vector2 AreaPoint(Vector2 windowPoint) => windowPoint;
+        // IMGUIのdrawRectはタブや枠を除いたEditorWindowの描画原点を基準にする。
+        protected virtual Vector2 AreaPoint(Vector2 windowPoint) => NavigationCoordinates.ToLocal(Window, Window.rootVisualElement, windowPoint);
         protected virtual Vector2 PanDelta(Vector2 delta) => delta;
         protected virtual Vector2 ZoomScale(Vector2 scale, float factor) => scale * factor;
         protected virtual void AfterApply()
