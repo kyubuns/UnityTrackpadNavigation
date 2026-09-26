@@ -4,7 +4,7 @@ English | [日本語](README.ja.md)
 
 Trackpad pan, zoom, and rotation for the Unity Editor on Apple Silicon Macs.
 
-https://github.com/user-attachments/assets/7dfbf874-a19e-457c-acfa-09c6d326cd9f
+https://github.com/user-attachments/assets/c918846c-f6f5-4f5f-a594-47fd0ce4eb91
 
 ## Install
 

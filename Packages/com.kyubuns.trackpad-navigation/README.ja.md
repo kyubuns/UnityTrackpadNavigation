@@ -4,7 +4,7 @@
 
 Apple SiliconのmacOS Unity Editorを、トラックパッドでパン・ズーム・回転できます。
 
-https://github.com/user-attachments/assets/7dfbf874-a19e-457c-acfa-09c6d326cd9f
+https://github.com/user-attachments/assets/fb245a00-c796-4d88-9f24-9787a6345e45
 
 ## 導入
 
