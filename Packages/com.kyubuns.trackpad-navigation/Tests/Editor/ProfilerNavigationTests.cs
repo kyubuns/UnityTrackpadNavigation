@@ -49,12 +49,12 @@ namespace TrackpadNavigation.Tests
                 var controller = EditorMember.Get(module, "m_DetailsViewController");
                 var canvas = (VisualElement)EditorMember.Get(controller, "m_LegacyIMGUIView");
                 var rect = (Rect)EditorMember.Get(area, "drawRect");
-                var point = window.rootVisualElement.WorldToLocal(canvas.LocalToWorld(rect.center));
+                var point = NavigationCoordinates.ToWindow(window, canvas, rect.center);
                 var target = NavigationTargets.Resolve(window, point, new TrackpadPreferences());
                 Assert.That(target, Is.TypeOf<ProfilerNavigation>());
                 Assert.That(target.HitTest(point), Is.True);
                 Assert.That(target.HitTest(new Vector2(point.x, 10)), Is.False);
-                var toolbar = window.rootVisualElement.WorldToLocal(canvas.LocalToWorld(new Vector2(rect.center.x, 5)));
+                var toolbar = NavigationCoordinates.ToWindow(window, canvas, new Vector2(rect.center.x, 5));
                 Assert.That(target.HitTest(toolbar), Is.False);
                 var translation = (Vector2)EditorMember.Get(area, "translation");
                 var scale = (Vector2)EditorMember.Get(area, "scale");

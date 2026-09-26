@@ -6,7 +6,7 @@ namespace TrackpadNavigation
 {
     internal static class EditorMember
     {
-        // Reflectionは既知のビュー状態に限定し、編集データには使わない。
+        // Reflectionは既知のビュー・選択状態に限定し、編集データには使わない。
         const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
         static readonly Dictionary<(Type, string), MemberInfo> Members = new();
 

@@ -34,20 +34,9 @@ namespace TrackpadNavigation
                 return;
             }
 
-            Bounds? bounds = null;
-            foreach (var renderer in picked.GetComponentsInChildren<Renderer>())
-            {
-                if (!renderer.enabled)
-                {
-                    continue;
-                }
-
-                var combined = bounds ?? renderer.bounds;
-                combined.Encapsulate(renderer.bounds);
-                bounds = combined;
-            }
-            // 選択状態を変えず、カーソル下の対象だけをフレーミングする。
-            view.Frame(bounds ?? new Bounds(picked.transform.position, Vector3.one), instant: false);
+            Selection.activeGameObject = picked;
+            view.Focus();
+            view.FrameSelected();
         }
 
         static GameObject Pick(SceneView view, Vector2 screenPoint, out Ray ray)

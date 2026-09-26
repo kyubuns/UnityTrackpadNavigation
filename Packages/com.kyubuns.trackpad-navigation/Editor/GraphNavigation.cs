@@ -63,8 +63,14 @@ namespace TrackpadNavigation
                     return;
                 }
 
-                var bounds = graph.contentViewContainer.WorldToLocal(node.worldBound);
-                GraphView.CalculateFrameTransform(bounds, graph.layout, 30, out position, out scale);
+                graph.ClearSelection();
+                graph.AddToSelection(node);
+                Window.Focus();
+                graph.Focus();
+                graph.FrameSelection();
+                remainder = Vector2.zero;
+                Window.Repaint();
+                return;
             }
             else if (value.Kind == GestureKind.Scroll)
             {

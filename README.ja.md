@@ -22,7 +22,7 @@ https://github.com/kyubuns/UnityTrackpadNavigation.git?path=Packages/com.kyubuns
 |---|---|
 | 2本指スライド | パン（平行移動） |
 | ピンチ | カーソル位置を中心にズーム |
-| 2本指ダブルタップ | カーソル下の対象にフォーカス |
+| 2本指ダブルタップ | カーソル下の対象を選択してフォーカス |
 | Option + 2本指スライド | 対象の周囲を回転 |
 | Command + 2本指スライド | カメラ位置を保って見回す |
 
@@ -50,7 +50,7 @@ Unity自身の設定を変更する項目で、Trackpad Navigationの **Restore 
 - VFX Graph
 - UI Builder
 
-回転・見回しはScene View、ダブルタップのフォーカスはScene View／GraphViewに対応します。
+回転・見回しはScene Viewに対応します。ダブルタップはScene View／GraphView／UI Builder／Animatorで、カーソル下の対象を選択してFキーと同じフォーカスを行います。空白部分では選択・表示を変更しません。
 
 Game Viewは停止中・一時停止中の表示をパン・ズームできます。\
 再生中はゲーム入力を優先し、拡大率と画像端はUnity標準の範囲に制限します。

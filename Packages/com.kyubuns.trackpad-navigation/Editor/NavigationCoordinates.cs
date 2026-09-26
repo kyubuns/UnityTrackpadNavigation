@@ -6,9 +6,8 @@ namespace TrackpadNavigation
 {
     internal static class NavigationCoordinates
     {
-        // Overlay対応ウィンドウのrootVisualElementはツールバーより下に配置される。
-        // EditorWindow.positionからの座標は、コンテンツではなくウィンドウ全体のルートを基準にする。
-        static VisualElement WindowRoot(EditorWindow window) => EditorMember.Get(window, "baseRootVisualElement") as VisualElement ?? window.rootVisualElement;
+        // EditorWindow.positionの原点はタブや枠を含むホスト側。EditorWindowのrootを使うとヘッダー分を二重に加算する。
+        static VisualElement WindowRoot(EditorWindow window) => window.rootVisualElement.panel.visualTree;
 
         public static Vector2 ToPanel(EditorWindow window, Vector2 windowPoint) => WindowRoot(window).LocalToWorld(windowPoint);
         public static Vector2 ToLocal(EditorWindow window, VisualElement element, Vector2 windowPoint) => element.WorldToLocal(ToPanel(window, windowPoint));

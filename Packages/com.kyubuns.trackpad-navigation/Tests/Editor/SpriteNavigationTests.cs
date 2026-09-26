@@ -44,15 +44,14 @@ namespace TrackpadNavigation.Tests
                     window.Repaint();
                     yield return null;
                 }
-                var windowRoot = (VisualElement)EditorMember.Get(window, "baseRootVisualElement");
                 var canvas = window.rootVisualElement.Q<IMGUIContainer>("mainViewIMGUIElement");
                 var rect = (Rect)EditorMember.Get(window, "windowDimension");
-                var point = windowRoot.WorldToLocal(canvas.LocalToWorld(rect.center));
+                var point = NavigationCoordinates.ToWindow(window, canvas, rect.center);
                 var target = NavigationTargets.Resolve(window, point, new TrackpadPreferences());
                 Assert.That(target, Is.TypeOf<SpriteNavigation>());
                 Assert.That(target.HitTest(point), Is.True);
                 Assert.That(target.HitTest(new Vector2(point.x, 5)), Is.False);
-                var scrollbar = windowRoot.WorldToLocal(canvas.LocalToWorld(new Vector2(rect.xMax + 3, rect.center.y)));
+                var scrollbar = NavigationCoordinates.ToWindow(window, canvas, new Vector2(rect.xMax + 3, rect.center.y));
                 Assert.That(target.HitTest(scrollbar), Is.False);
                 var selection = EditorMember.Get(window, "selectedSpriteRect");
                 var settings = new TrackpadPreferences();
@@ -65,7 +64,7 @@ namespace TrackpadNavigation.Tests
                 Assert.That(Vector2.Distance(scroll, beforeScroll - new Vector2(3.5f, -4.25f)), Is.LessThan(0.001f));
                 float zoom = (float)EditorMember.Get(window, "zoomLevel");
                 var anchor = new Vector2(-40, -30);
-                point = windowRoot.WorldToLocal(canvas.LocalToWorld(rect.center + anchor));
+                point = NavigationCoordinates.ToWindow(window, canvas, rect.center + anchor);
                 var screen = window.position.position + point;
                 var pinch = new TrackpadEvent
                 {

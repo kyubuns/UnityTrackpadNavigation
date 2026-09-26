@@ -22,7 +22,7 @@ If Scene View navigation feels choppy after the first installation, restart the 
 |---|---|
 | Two-finger slide | Pan |
 | Pinch | Zoom around the cursor |
-| Two-finger double-tap | Focus the object under the cursor |
+| Two-finger double-tap | Select and focus the object under the cursor |
 | Option + two-finger slide | Orbit around the target |
 | Command + two-finger slide | Look around from the camera position |
 
@@ -52,7 +52,7 @@ Tested with macOS 26.6.2 and Unity 6000.3.23f1 on Apple Silicon.
 - UI Builder
 
 Orbit and look are available in Scene View.\
-Double-tap focus is available in Scene View and GraphView.
+Double-tap selects the object under the cursor and frames the selection, just like pressing F, in Scene View, GraphView, UI Builder, and Animator. Empty space leaves the selection and view unchanged.
 
 Game View supports pan and zoom while stopped or paused.\
 During playback, game input takes priority; zoom and image bounds follow Unity’s standard limits.
