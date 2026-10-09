@@ -61,19 +61,20 @@ class BridgeCore
         UpdateModifiers(event.modifiers);
         event.optionSession = optionSession;
         ++stats.received;
+        // Smoothing utilities (Mos, Logitech) post precise wheel deltas without a gesture phase; only touch scrolling is phased.
+        bool touch = event.kind != Scroll || ((event.flags & Precise) && (event.phase != 0 || event.momentumPhase != 0));
         if (!active)
         {
             Reset();
             // macOS also delivers scrolling to background windows. Keep Unity stationary until focused.
-            return (event.kind == Scroll && (event.flags & Precise)) || event.kind == Magnify || event.kind == SmartZoom;
+            return (event.kind == Scroll && touch) || event.kind == Magnify || event.kind == SmartZoom;
         }
         event.sequence = stats.received;
-        bool precise = event.kind != Scroll || (event.flags & Precise) != 0;
         bool finite = std::isfinite(event.deltaX) && std::isfinite(event.deltaY) &&
                       std::isfinite(event.magnification) && std::isfinite(event.screenX) && std::isfinite(event.screenY);
         auto eligible = [&](const TNCapture &area, bool starting) {
             bool blockedModifier = (event.modifiers & Control) || ((event.modifiers & Command) && !(area.kinds & 4));
-            return precise && finite && !mouseDown && !blockedModifier &&
+            return touch && finite && !mouseDown && !blockedModifier &&
                    area.target != 0 && area.windowNumber == event.windowNumber &&
                    (!starting || (now <= leaseUntil && event.screenX >= area.x && event.screenX < area.x + area.width &&
                                   event.screenY >= area.y && event.screenY < area.y + area.height)) &&

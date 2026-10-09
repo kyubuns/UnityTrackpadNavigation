@@ -78,6 +78,14 @@ int main()
     assert(core.Count() == 0);
     event.flags = 0;
     assert(!core.Process(event, 2.04, false, false)); // Background mouse wheel is unchanged.
+    {
+        BridgeCore wheel;
+        auto smoothed = ScrollEvent();
+        smoothed.phase = 0; // Mos / Logitech smooth scrolling: precise deltas, no gesture phase.
+        Arm(wheel);
+        assert(!wheel.Process(smoothed, 1, true, false) && wheel.Count() == 0); // Smoothed wheel keeps standard zoom.
+        assert(!wheel.Process(smoothed, 1, false, false));                      // Background smoothed wheel is unchanged.
+    }
     event.kind = Magnify;
     assert(core.Process(event, 2.05, false, false));
     event.kind = SmartZoom;
